@@ -45,7 +45,13 @@ class WebhookGatewayClientServiceProvider extends ServiceProvider
                     $data = (array) $payload;
                 }
 
-                BroadcastEvent::dispatch($channel, $data)
+                if (method_exists($payload, 'eventMetadata')) {
+                    $meta = (array) $payload->eventMetadata();
+                } else {
+                    $meta = [];
+                }
+
+                BroadcastEvent::dispatch($channel, $data, $meta)
                     ->onQueue(config('webhook-gateway.queue_name'))
                     ->onConnection(config('webhook-gateway.queue_connection'));
             });
