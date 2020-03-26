@@ -28,16 +28,24 @@ class BroadcastEvent implements ShouldQueue
     public $name;
 
     /**
+     * Meta data.
+     *
+     * @var array
+     */
+    public $meta;
+
+    /**
      * Create a new job instance.
      *
      * @param string $name Event name
      * @param array $payload Event payload
      * @return void
      */
-    public function __construct($name, array $payload)
+    public function __construct($name, array $payload, array $meta = [])
     {
         $this->name = $name;
         $this->payload = $payload;
+        $this->meta = $meta;
     }
 
     /**
@@ -54,6 +62,10 @@ class BroadcastEvent implements ShouldQueue
             'channel' => ['name' => config('webhook-gateway.service.name').'.'.$this->name],
             'data' => $this->payload,
         ];
+
+        if (!empty($this->meta)) {
+            $data['meta'] = $this->meta;
+        }
 
         $client->post(
             config('webhook-gateway.api'),
