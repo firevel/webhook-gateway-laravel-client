@@ -61,7 +61,7 @@ class BroadcastEvent implements ShouldQueue
                 'headers' => [
                     'x-signature' => hash_hmac(
                         config('webhook-gateway.algorithm'),
-                        json_encode($data),
+                        json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE),
                         config('webhook-gateway.service.secret')
                     )
                 ],
