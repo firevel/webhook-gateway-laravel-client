@@ -45,6 +45,8 @@ Service is responsible for sharing selected events with Webhook Gateway and othe
 
 ## Usage
 
+### Sharing events
+
 Events matching `webhook-gateway.channels` pattern (currently no wildcard support), are going to be shared with other micro services subscribed to namespace used in channels configuration. Webhook Gateway will automatically add service prefix to every event dispatched.
 For example if you are using service name `billing` and setup channel
 
@@ -53,6 +55,35 @@ For example if you are using service name `billing` and setup channel
      ]
 
 every save event of invoice model going to be dispatched as `billing.invoice.created`.
+
+### Eloquent events
+
+By default, eloquent models are transformer to array using `(array) $model`. If you would like to customize event format add to your model:
+
+```
+    /**
+     * Get the event data array for the model.
+     *
+     * @return array
+     */
+    public function toEventArray()
+    {
+    	// Your code here...
+    }
+```
+
+You can also attach meta data to each event by adding to your model:
+```
+    /**
+     * Get the event meta data array.
+     *
+     * @return array
+     */
+    public function eventMetadata()
+    {
+    	// Your code here...
+    }
+```
 
 ### Credits
 
