@@ -28,10 +28,11 @@ Client is responsible for receiving events from Webhook Gateway and dispatching 
 Set channels you would like to listen to in Webhook Gateway subscribers section. Events are always starting with service for example `billing.invoice.created`.
 
 Example:
-
+```
     Event::listen('billing.invoice.created', function ($invoice) {
         PaymentService::payInvoice($invoice);
     });
+```
 
 # Service
 
@@ -49,11 +50,11 @@ Service is responsible for sharing selected events with Webhook Gateway and othe
 
 Events matching `webhook-gateway.channels` pattern (currently no wildcard support), are going to be shared with other micro services subscribed to namespace used in channels configuration. Webhook Gateway will automatically add service prefix to every event dispatched.
 For example if you are using service name `billing` and setup channel
-
+```
     'invoice.created' => [
         'eloquent.created: App/Models/Invoice',
      ]
-
+```
 every save event of invoice model going to be dispatched as `billing.invoice.created`.
 
 ### Eloquent events
@@ -84,6 +85,23 @@ You can also attach meta data to each event by adding to your model:
     	// Your code here...
     }
 ```
+
+### Laravel events
+
+To share Laravel events with event gateway you can use regular `webhook-gateway.channels` configuration for example:
+```
+    'user.suspended' => [
+        'App\Events\UserSuspended'
+    ],
+```
+
+You can use `toEventArray` and `eventMetadata` method to customize payload or meta data.
+
+# FAQ
+
+### Can I use WebHook gateway as Event Broadcasting driver?
+
+You would need to build custom driver (check `Illuminate\Contracts\Broadcasting`). Broadcasting driver is not the part of this package as laravel broadcasting was developed for other purposes (web sockets).
 
 ### Credits
 
