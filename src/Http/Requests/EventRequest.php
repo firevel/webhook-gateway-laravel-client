@@ -19,7 +19,7 @@ class EventRequest extends FormRequest
             return false;
         }
 
-        if (hash_equals(hash_hmac(config('webhook-gateway.algorithm'), $this->getContent(), config('webhook-gateway.client.secret')), $signature)) {
+        if (hash_equals(hash_hmac(config('webhookgateway.algorithm'), $this->getContent(), config('webhookgateway.client.secret')), $signature)) {
             return true;
         }
 
