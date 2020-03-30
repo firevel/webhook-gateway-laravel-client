@@ -8,11 +8,15 @@ This package is built to share events between micro-services though Webhook Gate
 
 Install using composer:
 
-`composer require firevel/webhook-gateway-laravel-client`
+```bash
+composer require firevel/webhook-gateway-laravel-client
+```
 
 Publish config:
 
-`php artisan vendor:publish --provider="Firevel\WebhookGatewayLaravelClient\Providers\WebhookGatewayClientServiceProvider" --tag="config"`
+```bash
+php artisan vendor:publish --provider="Firevel\WebhookGatewayLaravelClient\Providers\WebhookGatewayClientServiceProvider" --tag="config"
+```
 
 # Client
 
@@ -27,27 +31,27 @@ Client is responsible for receiving events from Webhook Gateway and dispatching 
 
 Set channels you would like to listen to in Webhook Gateway subscribers section. Events are always starting with service for example `billing.invoice.created`.
 
-```
-    Event::listen('billing.invoice.created', function ($invoice) {
-        PaymentService::payInvoice($invoice);
-    });
+```php
+Event::listen('billing.invoice.created', function ($invoice) {
+    PaymentService::payInvoice($invoice);
+});
 ```
 
 You can also use Laravel event listeners.
 
-```
-    protected $listen = [
-        'billing.invoice.created' => [
-            'App\Listeners\InvoiceCreated',
-        ],
-    ];
+```php
+protected $listen = [
+    'billing.invoice.created' => [
+        'App\Listeners\InvoiceCreated',
+    ],
+];
 ```
 
 
 
 Events are fired with `WebhookEvent` payload. It contains methods:
 
-```
+```php
 $event->getData(); // Get event data array.
 $event->getChannel(); // Get event channel name.
 $event->getMeta(); // Get event meta data array.
@@ -73,10 +77,10 @@ Service is responsible for sharing selected events with Webhook Gateway and othe
 
 Events matching `webhookgateway.channels` pattern (currently no wildcard support), are going to be shared with other micro services subscribed to namespace used in channels configuration. Webhook Gateway will automatically add service prefix to every event dispatched.
 For example if you are using service name `billing` and setup channel
-```
-    'invoice.created' => [
-        'eloquent.created: App/Models/Invoice',
-     ]
+```php
+'invoice.created' => [
+    'eloquent.created: App/Models/Invoice',
+ ]
 ```
 every save event of invoice model going to be dispatched as `billing.invoice.created`.
 
@@ -84,38 +88,38 @@ every save event of invoice model going to be dispatched as `billing.invoice.cre
 
 By default, eloquent models are transformer to array using `(array) $model`. If you would like to customize event format add to your model:
 
-```
-    /**
-     * Get the event data array for the model.
-     *
-     * @return array
-     */
-    public function toEventArray()
-    {
-    	// Your code here...
-    }
+```php
+/**
+ * Get the event data array for the model.
+ *
+ * @return array
+ */
+public function toEventArray()
+{
+    // Your code here...
+}
 ```
 
 You can also attach meta data to each event by adding to your model:
-```
-    /**
-     * Get the event meta data array.
-     *
-     * @return array
-     */
-    public function eventMetadata()
-    {
-    	// Your code here...
-    }
+```php
+/**
+ * Get the event meta data array.
+ *
+ * @return array
+ */
+public function eventMetadata()
+{
+    // Your code here...
+}
 ```
 
 ### Laravel events
 
 To share Laravel events with event gateway you can use regular `webhookgateway.channels` configuration for example:
-```
-    'user.suspended' => [
-        'App\Events\UserSuspended'
-    ],
+```php
+'user.suspended' => [
+    'App\Events\UserSuspended'
+],
 ```
 
 You can use `toEventArray` and `eventMetadata` method to customize payload or meta data.
