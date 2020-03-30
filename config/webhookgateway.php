@@ -67,4 +67,15 @@ return [
     |
      */
     'channels' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Event class.
+    |--------------------------------------------------------------------------
+    |
+    | Event class used during event disptach on cleint side.
+    |
+     */
+    'event_class' => Firevel\WebhookGatewayLaravelClient\WebhookEvent::class,
+
 ];
