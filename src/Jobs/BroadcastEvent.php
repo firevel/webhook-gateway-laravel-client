@@ -58,8 +58,8 @@ class BroadcastEvent implements ShouldQueue
         $client = new Client();
 
         $data = [
-            'service' => config('webhook-gateway.service.name'),
-            'channel' => ['name' => config('webhook-gateway.service.name').'.'.$this->name],
+            'service' => config('webhookgateway.service.name'),
+            'channel' => ['name' => config('webhookgateway.service.name').'.'.$this->name],
             'data' => $this->payload,
         ];
 
@@ -68,13 +68,13 @@ class BroadcastEvent implements ShouldQueue
         }
 
         $client->post(
-            config('webhook-gateway.api'),
+            config('webhookgateway.api'),
             [
                 'headers' => [
                     'x-signature' => hash_hmac(
-                        config('webhook-gateway.algorithm'),
+                        config('webhookgateway.algorithm'),
                         json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE),
-                        config('webhook-gateway.service.secret')
+                        config('webhookgateway.service.secret')
                     )
                 ],
                 \GuzzleHttp\RequestOptions::JSON => $data,

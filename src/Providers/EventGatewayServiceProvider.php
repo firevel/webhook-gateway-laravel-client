@@ -16,9 +16,9 @@ class WebhookGatewayClientServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../../config/webhook-gateway.php', 'webhook-gateway');
+        $this->mergeConfigFrom(__DIR__.'/../../config/webhookgateway.php', 'webhookgateway');
 
-        Route::post(config('webhook-gateway.client.route'), 'Firevel\WebhookGatewayLaravelClient\Http\Controllers\EventsController@handle');
+        Route::post(config('webhookgateway.client.route'), 'Firevel\WebhookGatewayLaravelClient\Http\Controllers\EventsController@handle');
     }
 
     /**
@@ -29,11 +29,11 @@ class WebhookGatewayClientServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../../config/webhook-gateway.php' => config_path('webhook-gateway.php'),
+            __DIR__.'/../../config/webhookgateway.php' => config_path('webhookgateway.php'),
         ], 'config');
 
         // Listen for events inside application and send them to Gateway.
-        foreach (config('webhook-gateway.channels', []) as $channel => $events) {
+        foreach (config('webhookgateway.channels', []) as $channel => $events) {
             Event::listen($events, function ($payload) use ($channel) {
                 if (method_exists($payload, 'toEventArray')) {
                     $data = $payload->toEventArray();
@@ -52,8 +52,8 @@ class WebhookGatewayClientServiceProvider extends ServiceProvider
                 }
 
                 BroadcastEvent::dispatch($channel, $data, $meta)
-                    ->onQueue(config('webhook-gateway.queue_name'))
-                    ->onConnection(config('webhook-gateway.queue_connection'));
+                    ->onQueue(config('webhookgateway.queue_name'))
+                    ->onConnection(config('webhookgateway.queue_connection'));
             });
         }
     }
