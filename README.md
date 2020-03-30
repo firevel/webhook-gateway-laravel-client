@@ -27,12 +27,35 @@ Client is responsible for receiving events from Webhook Gateway and dispatching 
 
 Set channels you would like to listen to in Webhook Gateway subscribers section. Events are always starting with service for example `billing.invoice.created`.
 
-Example:
 ```
     Event::listen('billing.invoice.created', function ($invoice) {
         PaymentService::payInvoice($invoice);
     });
 ```
+
+You can also use Laravel event listeners.
+
+```
+    protected $listen = [
+        'billing.invoice.created' => [
+            'App\Listeners\InvoiceCreated',
+        ],
+    ];
+```
+
+
+
+Events are fired with `WebhookEvent` payload. It contains methods:
+
+```
+$event->getData(); // Get event data array.
+$event->getChannel(); // Get event channel name.
+$event->getMeta(); // Get event meta data array.
+$event->getId(); // Get event id.
+$event->getSubscription(); Get event subscription array.
+```
+
+You can set custom webhook event class in `webhookgateway.event_class` configuration.
 
 # Service
 
