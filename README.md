@@ -75,7 +75,7 @@ Service is responsible for sharing selected events with Webhook Gateway and othe
 
 ### Sharing events
 
-Events matching `webhookgateway.channels` pattern (currently no wildcard support), are going to be shared with other micro services subscribed to namespace used in channels configuration. Webhook Gateway will automatically add service prefix to every event dispatched.
+Events matching `webhookgateway.channels` pattern, are going to be shared with other micro services subscribed to namespace used in channels configuration. Webhook Gateway will automatically add service prefix to every event dispatched.
 For example if you are using service name `billing` and setup channel
 ```php
 'invoice.created' => [
