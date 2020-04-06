@@ -34,7 +34,10 @@ class WebhookGatewayClientServiceProvider extends ServiceProvider
 
         // Listen for events inside application and send them to Gateway.
         foreach (config('webhookgateway.channels', []) as $channel => $events) {
-            Event::listen($events, function ($payload) use ($channel) {
+            Event::listen($events, function ($payload, $payloads = NULL) use ($channel) {
+                if (! ($payloads === NULL)) { // Channels with wildcard.
+                    $payload = $payloads[0];
+                }
                 if (method_exists($payload, 'toEventArray')) {
                     $data = $payload->toEventArray();
                 } elseif (method_exists($payload, 'toArray')) {
