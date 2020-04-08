@@ -3,7 +3,6 @@
 namespace Firevel\WebhookGatewayLaravelClient\Http\Controllers;
 
 use Firevel\WebhookGatewayLaravelClient\Http\Requests\EventRequest;
-use Firevel\WebhookGatewayLaravelClient\WebhookEvent;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -19,6 +18,6 @@ class EventsController extends Controller
     {
     	$eventClass = config('webhookgateway.event_class');
 
-    	event($request->input('channel.name'), new WebhookEvent($request));
+    	event($request->input('channel.name'), new $eventClass($request));
     }
 }
