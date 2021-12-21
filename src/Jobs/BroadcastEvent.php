@@ -68,7 +68,7 @@ class BroadcastEvent implements ShouldQueue
         }
 
         $client->post(
-            config('webhookgateway.api'),
+            rtrim(config('webhookgateway.api'), '/') . '/events',
             [
                 'headers' => [
                     'x-signature' => hash_hmac(
