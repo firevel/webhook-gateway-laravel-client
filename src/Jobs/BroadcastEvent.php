@@ -11,7 +11,10 @@ use Illuminate\Queue\SerializesModels;
 
 class BroadcastEvent implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Event payload.
@@ -37,8 +40,9 @@ class BroadcastEvent implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $name Event name
-     * @param array $payload Event payload
+     * @param string $name    Event name
+     * @param array  $payload Event payload
+     *
      * @return void
      */
     public function __construct($name, array $payload, array $meta = [])
@@ -60,7 +64,7 @@ class BroadcastEvent implements ShouldQueue
         $data = [
             'service' => config('webhookgateway.service.name'),
             'channel' => ['name' => config('webhookgateway.service.name').'.'.$this->name],
-            'data' => $this->payload,
+            'data'    => $this->payload,
         ];
 
         if (!empty($this->meta)) {
@@ -68,14 +72,14 @@ class BroadcastEvent implements ShouldQueue
         }
 
         $client->post(
-            rtrim(config('webhookgateway.api'), '/') . '/events',
+            rtrim(config('webhookgateway.api'), '/').'/events',
             [
                 'headers' => [
                     'x-signature' => hash_hmac(
                         config('webhookgateway.algorithm'),
-                        json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE),
+                        json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                         config('webhookgateway.service.secret')
-                    )
+                    ),
                 ],
                 \GuzzleHttp\RequestOptions::JSON => $data,
             ]

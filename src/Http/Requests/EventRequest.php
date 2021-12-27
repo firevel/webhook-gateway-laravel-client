@@ -34,8 +34,8 @@ class EventRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|string',
-            'data' => 'required|array',
+            'id'           => 'required|string',
+            'data'         => 'required|array',
             'channel.name' => 'required|string',
         ];
     }

@@ -6,40 +6,40 @@ use Firevel\WebhookGatewayLaravelClient\Http\Requests\EventRequest;
 
 class WebhookEvent
 {
-	/**
-	 * Channel name.
-	 *
-	 * @var string
-	 */
-	public $channel;
+    /**
+     * Channel name.
+     *
+     * @var string
+     */
+    public $channel;
 
-	/**
-	 * Meta data.
-	 *
-	 * @var array|null
-	 */
-	public $meta;
+    /**
+     * Meta data.
+     *
+     * @var array|null
+     */
+    public $meta;
 
-	/**
-	 * Event unique id.
-	 *
-	 * @var string
-	 */
-	public $id;
+    /**
+     * Event unique id.
+     *
+     * @var string
+     */
+    public $id;
 
-	/**
-	 * Event data.
-	 *
-	 * @var array
-	 */
-	public $data;
+    /**
+     * Event data.
+     *
+     * @var array
+     */
+    public $data;
 
-	/**
-	 * Subscription data.
-	 *
-	 * @var array
-	 */
-	public $subscription;
+    /**
+     * Subscription data.
+     *
+     * @var array
+     */
+    public $subscription;
 
     /**
      * Create a new event instance.
@@ -61,9 +61,9 @@ class WebhookEvent
 
     /**
      * Get channel name.
-     * 
+     *
      * Example: billing.invoice.created
-     * 
+     *
      * @return string
      */
     public function getChannel()
@@ -73,7 +73,7 @@ class WebhookEvent
 
     /**
      * Set channel name.
-     * 
+     *
      * @param string $channel
      *
      * @return self

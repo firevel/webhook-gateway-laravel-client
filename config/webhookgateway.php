@@ -3,7 +3,7 @@
 return [
     // Webhook gateway endpoint.
     'api' => env('WEBHOOKGATEWAY_API'),
-    
+
     // Algorithm used for signatures (HMAC). Must be equal to algorithm used on gateway.
     'algorithm' => 'sha256',
 
@@ -19,7 +19,7 @@ return [
      */
     'client' => [
         'secret' => env('WEBHOOKGATEWAY_CLIENT_SECRET'),
-        'route' => env('WEBHOOKGATEWAY_CLIENT_ROUTE', 'events'),
+        'route'  => env('WEBHOOKGATEWAY_CLIENT_ROUTE', 'events'),
     ],
 
     /*
@@ -31,7 +31,7 @@ return [
     |
      */
     'service' => [
-        'name' => env('WEBHOOKGATEWAY_SERVICE_NAME'),
+        'name'   => env('WEBHOOKGATEWAY_SERVICE_NAME'),
         'secret' => env('WEBHOOKGATEWAY_SERVICE_SECRET'),
     ],
 

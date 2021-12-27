@@ -2,10 +2,10 @@
 
 namespace Firevel\WebhookGatewayLaravelClient\Providers;
 
+use Firevel\WebhookGatewayLaravelClient\Jobs\BroadcastEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Route;
-use Firevel\WebhookGatewayLaravelClient\Jobs\BroadcastEvent;
 
 class WebhookGatewayClientServiceProvider extends ServiceProvider
 {
@@ -34,8 +34,8 @@ class WebhookGatewayClientServiceProvider extends ServiceProvider
 
         // Listen for events inside application and send them to Gateway.
         foreach (config('webhookgateway.channels', []) as $channel => $events) {
-            Event::listen($events, function ($payload, $payloads = NULL) use ($channel) {
-                if (! ($payloads === NULL)) { // Channels with wildcard.
+            Event::listen($events, function ($payload, $payloads = null) use ($channel) {
+                if (!($payloads === null)) { // Channels with wildcard.
                     $payload = $payloads[0];
                 }
                 if (method_exists($payload, 'toEventArray')) {
