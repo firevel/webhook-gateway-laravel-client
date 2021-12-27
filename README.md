@@ -2,7 +2,7 @@
 
 # Webhook Gateway client for Laravel
 
-This package is built to share events between micro-services though Webhook Gateway.
+This package is developed to share events between micro-services and 3rd party integrations.
 
 ## Installation
 
@@ -20,7 +20,7 @@ php artisan vendor:publish --provider="Firevel\WebhookGatewayLaravelClient\Provi
 
 # Client
 
-Client is responsible for receiving events from Webhook Gateway and dispatching them internally.
+Client is responsible for receiving events from Webhook Gateway and dispatching them as internal Laravel events.
 
 ## Setup
 
@@ -49,33 +49,34 @@ protected $listen = [
 
 
 
-Events are fired with `WebhookEvent` payload. It contains methods:
+Events include `WebhookEvent $event` payload, that contains methods:
 
 ```php
 $event->getData(); // Get event data array.
 $event->getChannel(); // Get event channel name.
 $event->getMeta(); // Get event meta data array.
 $event->getId(); // Get event id.
-$event->getSubscription(); Get event subscription array.
+$event->getSubscription(); // Get event subscription array.
 ```
 
 You can set custom webhook event class in `webhookgateway.event_class` configuration.
 
 # Service
 
-Service is responsible for sharing selected events with Webhook Gateway and other micro-services.
+Use service configuration to share Laravel events with Webhook Gateway and other micro-services.
 
 ## Setup
 
 1. Create a new service at Webhook Gateway and set service name with service secret.
-2. Setup you Webhook Gateway, service name, and secret in `config/webhookgateway.php`.
-3. Setup events you would like to share with Webhook Gateway using `webhookgateway.channels` config.
+2. Set Webhook Gateway service name, and secret in `config/webhookgateway.php`.
+3. Select events you would like to share with Webhook Gateway using `webhookgateway.channels` config.
 
 ## Usage
 
 ### Sharing events
 
 Events matching `webhookgateway.channels` pattern, are going to be shared with other micro services subscribed to namespace used in channels configuration. Webhook Gateway will automatically add service prefix to every event dispatched.
+
 For example if you are using service name `billing` and setup channel
 ```php
 'invoice.created' => [
@@ -96,11 +97,14 @@ By default, eloquent models are transformer to array using `(array) $model`. If 
  */
 public function toEventArray()
 {
-    // Your code here...
+    return [
+        // Your code here...
+    ];
 }
 ```
 
 You can also attach meta data to each event by adding to your model:
+
 ```php
 /**
  * Get the event meta data array.
