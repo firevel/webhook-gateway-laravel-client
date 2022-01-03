@@ -86,12 +86,18 @@ class WebhookEvent
     }
 
     /**
-     * Get event meta data.
+     * Get complete event meta or specific key using "dot" notation.
+     *
+     * @param string|null $key
      *
      * @return array|null
      */
-    public function getMeta()
+    public function getMeta($key = null)
     {
+        if (!empty($key)) {
+            return data_get($this->meta, $key);
+        }
+
         return $this->meta;
     }
 
@@ -134,12 +140,18 @@ class WebhookEvent
     }
 
     /**
-     * Get event data.
+     * Get complete event data or specific key using "dot" notation.
+     *
+     * @param string|null $key
      *
      * @return array
      */
-    public function getData()
+    public function getData($key = null)
     {
+        if (!empty($key)) {
+            return data_get($this->data, $key);
+        }
+
         return $this->data;
     }
 
