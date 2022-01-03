@@ -24,7 +24,7 @@ Client is responsible for receiving events from Webhook Gateway and dispatching 
 
 ## Setup
 
-1. Create you client account on Webhook Gateway and set your client secret and client url (by default `https://HOST/events`).
+1. Create you client account on Webhook Gateway and set your client secret and client url (by default `https://HOST/webhook`).
 2. Set your client secret in `config/webhookgateway.php` or `WEBHOOKGATEWAY_CLIENT_SECRET` env variable.
 
 ## Usage
