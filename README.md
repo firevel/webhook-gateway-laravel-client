@@ -53,8 +53,10 @@ Events include `WebhookEvent $event` payload, that contains methods:
 
 ```php
 $event->getData(); // Get event data array.
+$event->getData('user.email'); // Get event data using "dot" annotation.
 $event->getChannel(); // Get event channel name.
 $event->getMeta(); // Get event meta data array.
+$event->getMeta('role.id'); // Get meta data using "dot" annotation.
 $event->getId(); // Get event id.
 $event->getSubscription(); // Get event subscription array.
 ```
