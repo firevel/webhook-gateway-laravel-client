@@ -60,6 +60,16 @@ class WebhookEvent
     }
 
     /**
+     * Make new Webhook Event instance.
+     *
+     * @return self
+     */
+    public static function make()
+    {
+        return new static();
+    }
+
+    /**
      * Get channel name.
      *
      * Example: billing.invoice.created
