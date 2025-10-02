@@ -48,7 +48,7 @@ class WebhookEvent
      *
      * @return void
      */
-    public function __construct(EventRequest $request = null)
+    public function __construct(?EventRequest $request = null)
     {
         if (!empty($request)) {
             $this->setChannel($request->input('channel.name'));
