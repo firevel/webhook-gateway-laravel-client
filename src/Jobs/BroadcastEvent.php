@@ -55,12 +55,12 @@ class BroadcastEvent implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param Client $client
+     *
      * @return void
      */
-    public function handle()
+    public function handle(Client $client)
     {
-        $client = new Client();
-
         $data = [
             'service' => config('webhookgateway.service.name'),
             'channel' => ['name' => config('webhookgateway.service.name').'.'.$this->name],
@@ -71,17 +71,21 @@ class BroadcastEvent implements ShouldQueue
             $data['meta'] = $this->meta;
         }
 
+        // The signature covers the exact bytes sent as the request body.
+        $body = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
         $client->post(
             rtrim(config('webhookgateway.api'), '/').'/events',
             [
                 'headers' => [
-                    'x-signature' => hash_hmac(
+                    'Content-Type' => 'application/json',
+                    'x-signature'  => hash_hmac(
                         config('webhookgateway.algorithm'),
-                        json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                        $body,
                         config('webhookgateway.service.secret')
                     ),
                 ],
-                \GuzzleHttp\RequestOptions::JSON => $data,
+                'body' => $body,
             ]
         );
     }

@@ -16,10 +16,15 @@ return [
     |
     | By default events are sent by POST to /events endpoint.
     |
+    | Received events are dispatched during the request. Set "queue" to true
+    | to dispatch them from a queued job instead, so slow listeners do not
+    | delay the response to the Gateway.
+    |
      */
     'client' => [
         'secret' => env('WEBHOOKGATEWAY_CLIENT_SECRET'),
         'route'  => env('WEBHOOKGATEWAY_CLIENT_ROUTE', 'events'),
+        'queue'  => env('WEBHOOKGATEWAY_CLIENT_QUEUE', false),
     ],
 
     /*
@@ -73,7 +78,7 @@ return [
     | Event class.
     |--------------------------------------------------------------------------
     |
-    | Event class used during event disptach on cleint side.
+    | Event class used during event dispatch on client side.
     |
      */
     'event_class' => Firevel\WebhookGatewayLaravelClient\WebhookEvent::class,

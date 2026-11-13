@@ -4,8 +4,8 @@ namespace Firevel\WebhookGatewayLaravelClient\Providers;
 
 use Firevel\WebhookGatewayLaravelClient\Jobs\BroadcastEvent;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Route;
 
 class WebhookGatewayClientServiceProvider extends ServiceProvider
 {
@@ -38,17 +38,17 @@ class WebhookGatewayClientServiceProvider extends ServiceProvider
                 if (!($payloads === null)) { // Channels with wildcard.
                     $payload = $payloads[0];
                 }
-                if (method_exists($payload, 'toEventArray')) {
-                    $data = $payload->toEventArray();
-                } elseif (method_exists($payload, 'toArray')) {
-                    $data = $payload->toArray();
-                } elseif (is_array($payload)) {
+                if (is_array($payload)) {
                     $data = $payload;
+                } elseif (is_object($payload) && method_exists($payload, 'toEventArray')) {
+                    $data = $payload->toEventArray();
+                } elseif (is_object($payload) && method_exists($payload, 'toArray')) {
+                    $data = $payload->toArray();
                 } else {
                     $data = (array) $payload;
                 }
 
-                if (method_exists($payload, 'eventMetadata')) {
+                if (is_object($payload) && method_exists($payload, 'eventMetadata')) {
                     $meta = (array) $payload->eventMetadata();
                 } else {
                     $meta = [];

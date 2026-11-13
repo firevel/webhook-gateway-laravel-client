@@ -1,0 +1,23 @@
+{
+    "description": "Shared by express-webhook-gateway and webhook-gateway-laravel-client. body is the exact request body; signature is the hex HMAC-SHA256 of body with secret (x-signature header). Generated with PHP json_encode(JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) and hash_hmac.",
+    "cases": [
+        {
+            "name": "simple event",
+            "secret": "service-secret",
+            "body": "{\"service\":\"billing\",\"channel\":{\"name\":\"billing.invoice.created\"},\"data\":{\"id\":15,\"total\":99.5}}",
+            "signature": "2d5cd09911f46cd45d8097215dc3b6982e090316d449ad4fa42aeb339e099095"
+        },
+        {
+            "name": "unicode and slashes",
+            "secret": "s3cr3t/üñí",
+            "body": "{\"service\":\"billing\",\"channel\":{\"name\":\"billing.customer.updated\"},\"data\":{\"name\":\"Zażółć gęślą jaźń\",\"url\":\"https://example.com/a/b\"},\"meta\":{\"role\":{\"id\":7}}}",
+            "signature": "b45e38d00d774551c708c7613e0770f770220050d8f175d373d942c6b667fb54"
+        },
+        {
+            "name": "body that JSON.stringify would rewrite (numeric keys, large float)",
+            "secret": "service-secret",
+            "body": "{\"service\":\"billing\",\"channel\":{\"name\":\"billing.invoice.paid\"},\"data\":{\"quantities\":{\"b\":1,\"10\":2,\"2\":3},\"amount\":1.0e+25}}",
+            "signature": "132be9b51128abb602f1472847bfef828861af6294a480c12b4812f0a0774767"
+        }
+    ]
+}

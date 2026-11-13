@@ -63,6 +63,10 @@ $event->getSubscription(); // Get event subscription array.
 
 You can set custom webhook event class in `webhookgateway.event_class` configuration.
 
+### Handling events on a queue
+
+By default received events are dispatched to your listeners during the gateway request. To answer the gateway immediately and dispatch from a queued job instead, set `WEBHOOKGATEWAY_CLIENT_QUEUE=true` (`webhookgateway.client.queue`). The job uses `webhookgateway.queue_name` and `webhookgateway.queue_connection`.
+
 # Service
 
 Use service configuration to share Laravel events with Webhook Gateway and other micro-services.
@@ -135,6 +139,15 @@ You can use `toEventArray` and `eventMetadata` method to customize payload or me
 ### Can I use WebHook gateway as Event Broadcasting driver?
 
 You would need to build custom driver (check `Illuminate\Contracts\Broadcasting`). Broadcasting driver is not the part of this package as laravel broadcasting was developed for other purposes (web sockets).
+
+# Testing
+
+```bash
+composer install
+composer test
+```
+
+`tests/fixtures/signatures.json` is shared with [express-webhook-gateway](https://github.com/firevel/express-webhook-gateway) and must stay identical in both repositories.
 
 ### Credits
 
