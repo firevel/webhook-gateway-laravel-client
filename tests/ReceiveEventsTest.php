@@ -15,10 +15,10 @@ class ReceiveEventsTest extends TestCase
      * @var array
      */
     protected $call = [
-        'id'      => '7c0a9b0e-5a56-4a55-8f0b-0a4f1f1f3c11',
-        'channel' => ['name' => 'billing.invoice.created'],
-        'data'    => ['id' => 15, 'user' => ['email' => 'jane@example.com']],
-        'meta'    => ['role' => ['id' => 7]],
+        'id'           => '7c0a9b0e-5a56-4a55-8f0b-0a4f1f1f3c11',
+        'channel'      => ['name' => 'billing.invoice.created'],
+        'data'         => ['id' => 15, 'user' => ['email' => 'jane@example.com']],
+        'meta'         => ['role' => ['id' => 7]],
         'subscription' => [
             'channel' => 'billing.invoice.created',
             'client'  => ['id' => 'client-1'],
