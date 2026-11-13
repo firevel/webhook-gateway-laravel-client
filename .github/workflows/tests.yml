@@ -12,8 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { php: '8.2', testbench: '^8.0' }   # Laravel 10
-          - { php: '8.3', testbench: '^9.0' }   # Laravel 11
+          # Laravel 10 and 11 are end-of-life: every release has open security
+          # advisories, so Composer only installs them with blocking turned off.
+          - { php: '8.2', testbench: '^8.0', eol: true }  # Laravel 10
+          - { php: '8.3', testbench: '^9.0', eol: true }  # Laravel 11
           - { php: '8.4', testbench: '^10.0' }  # Laravel 12
           - { php: '8.4', testbench: '^11.0' }  # Laravel 13
     steps:
@@ -23,5 +25,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - run: composer require --dev "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+      - if: matrix.eol
+        run: composer config policy.advisories.block false
       - run: composer update --prefer-dist --no-interaction
       - run: composer test
